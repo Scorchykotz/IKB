@@ -3,18 +3,18 @@
 """
 import enum
 
-PAGE_URL = "https://smartmeter-web.wienernetze.at/"
-API_CONFIG_URL = "https://smartmeter-web.wienernetze.at/assets/app-config.json"
-API_URL_ALT = "https://service.wienernetze.at/sm/api/"
+PAGE_URL = "https://smartmeter.ikb.at/"
+API_CONFIG_URL = "https://smartmeter.ikb.at/assets/app-config.json"
+API_URL_ALT = "https://service.ikb.at/sm/api/"
 # These two URLS are also coded in the js as b2cApiUrl and b2bApiUrl
-API_URL = "https://api.wstw.at/gateway/WN_SMART_METER_PORTAL_API_B2C/1.0"
-API_URL_B2B = "https://api.wstw.at/gateway/WN_SMART_METER_PORTAL_API_B2B/1.0"
-REDIRECT_URI = "https://smartmeter-web.wienernetze.at/"
+API_URL = "https://api.ikb.at/gateway/IKB_SMART_METER_PORTAL_API_B2C/1.0"
+API_URL_B2B = "https://api.ikb.at/gateway/IKB_SMART_METER_PORTAL_API_B2B/1.0"
+REDIRECT_URI = "https://smartmeter.ikb.at/"
 API_DATE_FORMAT = "%Y-%m-%dT%H:%M:%S.%f"
-AUTH_URL = "https://log.wien/auth/realms/logwien/protocol/openid-connect/"  # noqa
+AUTH_URL = "https://login.ikb.at/auth/realms/ikb/protocol/openid-connect/"  # noqa
 
 LOGIN_ARGS = {
-    "client_id": "wn-smartmeter",
+    "client_id": "ikb-smartmeter",
     "redirect_uri": REDIRECT_URI,
     "response_mode": "fragment",
     "response_type": "code",
@@ -82,7 +82,7 @@ def build_access_token_args(**kwargs):
     """
     args = {
         "grant_type": "authorization_code",
-        "client_id": "wn-smartmeter",
+        "client_id": "ikb-smartmeter",
         "redirect_uri": REDIRECT_URI
     }
     args.update(**kwargs)

@@ -1,4 +1,4 @@
-# Wiener Netze Smartmeter Integration for Home Assistant
+# IKB Smartmeter Integration for Home Assistant
 
 [![codecov](https://codecov.io/gh/DarwinsBuddy/WienerNetzeSmartmeter/branch/main/graph/badge.svg?token=ACYNOG1WFW)](https://codecov.io/gh/DarwinsBuddy/WienerNetzeSmartmeter)
 ![Tests](https://github.com/DarwinsBuddy/WienerNetzeSmartMeter/actions/workflows/test.yml/badge.svg)
@@ -10,7 +10,7 @@
 ## About 
 
 This repo contains a custom component for [Home Assistant](https://www.home-assistant.io) for exposing a sensor
-providing information about a registered [WienerNetze Smartmeter](https://www.wienernetze.at/smartmeter).
+providing information about a registered smart meter at [Innsbrucker Kommunalbetriebe (IKB)](https://www.ikb.at/).
 
 ## FAQs
 [FAQs](https://github.com/DarwinsBuddy/WienerNetzeSmartmeter/discussions/19)
@@ -22,7 +22,7 @@ providing information about a registered [WienerNetze Smartmeter](https://www.wi
 Copy `<project-dir>/custom_components/wnsm` into `<home-assistant-root>/config/custom_components`
 
 ### HACS
-1. Search for `Wiener Netze Smart Meter` or `wnsm` in HACS
+1. Search for `IKB Smart Meter` or `wnsm` in HACS
 2. Install
 3. ...
 4. Profit!
@@ -44,11 +44,5 @@ After successful configuration you can add sensors to your favourite dashboard, 
 See [Example configuration files](https://github.com/DarwinsBuddy/WienerNetzeSmartmeter/blob/main/example/configuration.yaml)
 ## Copyright
 
-This integration uses the API of https://www.wienernetze.at/smartmeter
-All rights regarding the API are reserved by [Wiener Netze](https://www.wienernetze.at/impressum)
-
-Special thanks to [platrysma](https://github.com/platysma)
-for providing me a starting point [vienna-smartmeter](https://github.com/platysma/vienna-smartmeter)
-and especially [florianL21](https://github.com/florianL21/)
-for his [fork](https://github.com/florianL21/vienna-smartmeter/network)
+This integration uses the API of the IKB smart-meter portal.
 

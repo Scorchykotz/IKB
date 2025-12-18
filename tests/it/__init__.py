@@ -27,18 +27,18 @@ def _dt_string(datetime_string):
 CODE_VERIFIER = "30VayZvGKqlW9eImS9ksvvjRePhfox2qSYda-tLE6hc"
 CODE_CHALLENGE = "K3kc5ihkd-TB4ZmZT1Vo4-5vX5FNJvhNDSxYjkLkFOU"
 
-PAGE_URL = "https://smartmeter-web.wienernetze.at/"
-API_CONFIG_URL = "https://smartmeter-web.wienernetze.at/assets/app-config.json"
-API_URL_ALT = "https://service.wienernetze.at/sm/api/"
-API_URL_B2C = "https://api.wstw.at/gateway/WN_SMART_METER_PORTAL_API_B2C/1.0"
-API_URL_B2B = "https://api.wstw.at/gateway/WN_SMART_METER_PORTAL_API_B2B/1.0"
-REDIRECT_URI = "https://smartmeter-web.wienernetze.at/"
+PAGE_URL = "https://smartmeter.ikb.at/"
+API_CONFIG_URL = "https://smartmeter.ikb.at/assets/app-config.json"
+API_URL_ALT = "https://service.ikb.at/sm/api/"
+API_URL_B2C = "https://api.ikb.at/gateway/IKB_SMART_METER_PORTAL_API_B2C/1.0"
+API_URL_B2B = "https://api.ikb.at/gateway/IKB_SMART_METER_PORTAL_API_B2B/1.0"
+REDIRECT_URI = "https://smartmeter.ikb.at/"
 API_DATE_FORMAT = "%Y-%m-%dT%H:%M:%S.%f"
-AUTH_URL = "https://log.wien/auth/realms/logwien/protocol/openid-connect"  # noqa
-B2C_API_KEY = "afb0be74-6455-44f5-a34d-6994223020ba"
-B2B_API_KEY = "93d5d520-7cc8-11eb-99bc-ba811041b5f6"
+AUTH_URL = "https://login.ikb.at/auth/realms/ikb/protocol/openid-connect/"  # noqa
+B2C_API_KEY = "ikb-b2c-api-key"
+B2B_API_KEY = "ikb-b2b-api-key"
 LOGIN_ARGS = {
-    "client_id": "wn-smartmeter",
+    "client_id": "ikb-smartmeter",
     "redirect_uri": REDIRECT_URI,
     "response_mode": "fragment",
     "response_type": "code",
@@ -372,7 +372,7 @@ def mock_login_page(requests_mock: Mocker, status: int | None = 200):
     """
     mock GET login url from login page (+ session_code + client_id + execution param)
     """
-    get_login_url = AUTH_URL + "/auth?" + parse.urlencode(LOGIN_ARGS)
+    get_login_url = AUTH_URL + "auth?" + parse.urlencode(LOGIN_ARGS)
     if status == 200:
         requests_mock.get(url=get_login_url, text=files('test_resources').joinpath('auth.html').read_text())
     elif status is None:
@@ -386,7 +386,7 @@ def mock_get_api_key(requests_mock: Mocker, bearer_token: str = ACCESS_TOKEN,
                      get_config_status: int | None = 200, include_b2c_key: bool = True, include_b2b_key: bool = True,
                      same_b2c_url: bool = True, same_b2b_url: bool = True):
     """
-    mock GET smartmeter-web.wienernetze.at to retrieve app-config.json which carries the b2cApiKey and b2bApiKey
+    mock GET smartmeter.ikb.at to retrieve app-config.json which carries the b2cApiKey and b2bApiKey
     """
     config_path = files('test_resources').joinpath('app-config.json')
     config_response = config_path.read_text()
@@ -398,9 +398,9 @@ def mock_get_api_key(requests_mock: Mocker, bearer_token: str = ACCESS_TOKEN,
         del config_data["b2bApiKey"]
 
     if not same_b2c_url:
-        config_data["b2cApiUrl"] = "https://api.wstw.at/gateway/WN_SMART_METER_PORTAL_API_B2C/2.0"
+        config_data["b2cApiUrl"] = "https://api.ikb.at/gateway/IKB_SMART_METER_PORTAL_API_B2C/2.0"
     if not same_b2b_url:
-        config_data["b2bApiUrl"] = "https://api.wstw.at/gateway/WN_SMART_METER_PORTAL_API_B2B/2.0"
+        config_data["b2bApiUrl"] = "https://api.ikb.at/gateway/IKB_SMART_METER_PORTAL_API_B2B/2.0"
 
     config_response = json.dumps(config_data)
         
@@ -427,30 +427,20 @@ def mock_token(requests_mock: Mocker, code=RESPONSE_CODE, access_token=ACCESS_TO
         "session_state": "949e0f0d-b447-4208-bfef-273d694dc633",
         "scope": "openid email profile"
     }
+    token_url = AUTH_URL + "token"
+    token_matcher = {
+        "grant_type": "authorization_code",
+        "client_id": "ikb-smartmeter",
+        "redirect_uri": REDIRECT_URI,
+        "code": code,
+        "code_verifier": code_verifier
+    }
     if status == 200:
-        requests_mock.post(f'{AUTH_URL}/token', additional_matcher=post_data_matcher({
-            "grant_type": "authorization_code",
-            "client_id": "wn-smartmeter",
-            "redirect_uri": REDIRECT_URI,
-            "code": code,
-            "code_verifier": code_verifier
-        }), json=response, status_code=status)
+        requests_mock.post(token_url, additional_matcher=post_data_matcher(token_matcher), json=response, status_code=status)
     elif status is None:
-        requests_mock.post(f'{AUTH_URL}/token', additional_matcher=post_data_matcher({
-            "grant_type": "authorization_code",
-            "client_id": "wn-smartmeter",
-            "redirect_uri": REDIRECT_URI,
-            "code": code,
-            "code_verifier": code_verifier
-        }), exc=requests.exceptions.ConnectTimeout)
+        requests_mock.post(token_url, additional_matcher=post_data_matcher(token_matcher), exc=requests.exceptions.ConnectTimeout)
     else:
-        requests_mock.post(f'{AUTH_URL}/token', additional_matcher=post_data_matcher({
-            "grant_type": "authorization_code",
-            "client_id": "wn-smartmeter",
-            "redirect_uri": REDIRECT_URI,
-            "code": code,
-            "code_verifier": code_verifier
-        }), json={}, status_code=status)
+        requests_mock.post(token_url, additional_matcher=post_data_matcher(token_matcher), json={}, status_code=status)
 
 
 @pytest.mark.usefixtures("requests_mock")
@@ -461,10 +451,10 @@ def mock_authenticate(requests_mock: Mocker, username, password, code=RESPONSE_C
     authenticate_query_params = {
         "session_code": "SESSION_CODE_PLACEHOLDER",
         "execution": "5939ddcc-efd4-407c-b01c-df8977d522b5",
-        "client_id": "wn-smartmeter",
+        "client_id": "ikb-smartmeter",
         "tab_id": "6tDgFA2FxbU"
     }
-    authenticate_url = f'https://log.wien/auth/realms/logwien/login-actions/authenticate?{parse.urlencode(authenticate_query_params)}'
+    authenticate_url = f'https://login.ikb.at/auth/realms/ikb/login-actions/authenticate?{parse.urlencode(authenticate_query_params)}'
 
     # for some weird reason we have to perform this call before. maybe to create a login session. idk
     requests_mock.post(authenticate_url, status_code=status,
