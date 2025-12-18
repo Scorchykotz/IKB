@@ -4,11 +4,11 @@
       "auth": "Username/password invalid",
       "connection_error": "Unable to connect"
     },
-    "flow_title": "Wiener Netze Smartmeter",
+    "flow_title": "IKB Smartmeter",
     "step": {
       "user": {
-        "title": "Wiener Netze Smartmeter Authentication",
-        "description": "Enter your Wiener Netze Smartmeter credentials",
+        "title": "IKB Smartmeter Authentication",
+        "description": "Enter your IKB Smartmeter credentials",
         "data": {
           "username": "Username",
           "password": "Password"

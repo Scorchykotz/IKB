@@ -1,6 +1,6 @@
 {
     "domain": "wnsm",
-    "name": "WienerNetzeSmartmeter",
+    "name": "IKBSmartmeter",
     "codeowners": [
         "@DarwinsBuddy"
     ],

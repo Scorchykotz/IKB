@@ -21,7 +21,7 @@ AUTH_SCHEMA = vol.Schema(
 
 
 class WienerNetzeSmartMeterCustomConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
-    """Wiener Netze Smartmeter config flow"""
+    """IKB Smartmeter config flow"""
 
     data: Optional[dict[str, Any]]
 
@@ -51,7 +51,7 @@ class WienerNetzeSmartMeterCustomConfigFlow(config_entries.ConfigFlow, domain=DO
                     user_input[CONF_USERNAME], user_input[CONF_PASSWORD]
                 )
             except Exception as exception:  # pylint: disable=broad-except
-                _LOGGER.error("Error validating Wiener Netze auth")
+                _LOGGER.error("Error validating IKB auth")
                 _LOGGER.exception(exception)
                 errors["base"] = "auth"
             if not errors:
@@ -63,7 +63,7 @@ class WienerNetzeSmartMeterCustomConfigFlow(config_entries.ConfigFlow, domain=DO
                 ]
                 # User is done authenticating, create entry
                 return self.async_create_entry(
-                    title="Wiener Netze Smartmeter", data=self.data
+                    title="IKB Smartmeter", data=self.data
                 )
 
         return self.async_show_form(

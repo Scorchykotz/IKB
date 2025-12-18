@@ -1,5 +1,5 @@
 """
-WienerNetze Smartmeter sensor platform
+IKB Smartmeter sensor platform
 """
 import collections.abc
 from datetime import timedelta
@@ -23,7 +23,7 @@ from homeassistant.helpers.typing import (
 )
 from .const import CONF_ZAEHLPUNKTE
 from .wnsm_sensor import WNSMSensor
-# Time between updating data from Wiener Netze
+# Time between updating data from IKB
 SCAN_INTERVAL = timedelta(minutes=60 * 6)
 PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend(
     {

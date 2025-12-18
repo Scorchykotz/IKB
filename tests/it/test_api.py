@@ -149,9 +149,9 @@ def test_warning_b2c_api_key_change(requests_mock,caplog):
     mock_token(requests_mock)
     mock_get_api_key(requests_mock, same_b2c_url = False)
     smartmeter().login()
-    assert const.API_URL == "https://api.wstw.at/gateway/WN_SMART_METER_PORTAL_API_B2C/2.0"
+    assert const.API_URL == "https://api.ikb.at/gateway/IKB_SMART_METER_PORTAL_API_B2C/2.0"
     assert 'The b2cApiUrl has changed' in caplog.text
-    
+
 @pytest.mark.usefixtures("requests_mock")
 def test_warning_b2b_api_key_change(requests_mock,caplog):
     mock_login_page(requests_mock)
@@ -159,7 +159,7 @@ def test_warning_b2b_api_key_change(requests_mock,caplog):
     mock_token(requests_mock)
     mock_get_api_key(requests_mock, same_b2b_url = False)
     smartmeter().login()
-    assert const.API_URL_B2B == "https://api.wstw.at/gateway/WN_SMART_METER_PORTAL_API_B2B/2.0"
+    assert const.API_URL_B2B == "https://api.ikb.at/gateway/IKB_SMART_METER_PORTAL_API_B2B/2.0"
     assert 'The b2bApiUrl has changed' in caplog.text
 
 @pytest.mark.usefixtures("requests_mock")
